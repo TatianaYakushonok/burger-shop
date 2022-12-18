@@ -1,3 +1,6 @@
+import { 
+    cartInit 
+} from './cart.js';
 import {
     modalProduct,
     catalogList,
@@ -7,27 +10,11 @@ import { navigationListController } from './navigationListController.js';
 import { openModal } from './openModal.js';
 import { renderListProduct } from './renderListProduct.js';
 
-const burgerMax = {
-    title: 'Бургер Макс',
-    price: 10000,
-    weight: 5000,
-    calories: 15000,
-    description: 'Огромный бургер для большой компании',
-    image: './img/megaburger.jpg',
-    ingredients: [
-        'Пшеничная булочка',
-        'Мега котлета из говядины',
-        'Много сыра',
-        'Листья салата',
-        'Соус Чипотл'
-    ]
-};
-
 const closeModal = (event) => {
 
-    if(event.target.closest('.modal__close') 
-      || event.target === modalProduct
-      || event.key === 'Escape') {
+    if (event.target.closest('.modal__close')
+        || event.target === modalProduct
+        || event.key === 'Escape') {
         modalProduct.classList.remove('modal_open');
         document.removeEventListener('keydown', closeModal);
     };
@@ -36,9 +23,10 @@ const closeModal = (event) => {
 catalogList.addEventListener('click', (e) => {
     const target = e.target;
 
-    if(target.closest('.product__detail') 
-      || target.closest('.product__image')) {
-        openModal(burgerMax);
+    if (target.closest('.product__detail')
+        || target.closest('.product__image')) {
+        const id = target.closest('.product').dataset.idProduct;
+        openModal(id);
         modalProductBtn.focus();
         document.addEventListener('keydown', closeModal);
     };
@@ -60,7 +48,8 @@ modalProduct.addEventListener('click', closeModal);
 
 const init = () => {
     renderListProduct();
-    navigationListController();
+    navigationListController(renderListProduct);
+    cartInit();
 };
 
 init();
